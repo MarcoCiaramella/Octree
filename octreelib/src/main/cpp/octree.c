@@ -3611,55 +3611,85 @@ itg call(lolgetnearest)(int64_t *OctIdx, itg *typ, fpn *MinCrd, fpn *MinDis,
 }
 
 JNIEXPORT jlong JNICALL
-Java_com_ds_octreelib_Octree_LolNewOctree(JNIEnv* env, jobject this){
+Java_com_ds_octreelib_Octree_LolNewOctree(
+        JNIEnv* env, jobject this,
+        jint NmbVer, const jdoubleArray PtrCrd1, const jdoubleArray PtrCrd2,
+        jint NmbEdg, const jintArray PtrEdg1, const jintArray PtrEdg2,
+        jint NmbTri, const jintArray PtrTri1, const jintArray PtrTri2,
+        jint NmbQad, const jintArray PtrQad1, const jintArray PtrQad2,
+        jint NmbTet, const jintArray PtrTet1, const jintArray PtrTet2,
+        jint NmbPyr, const jintArray PtrPyr1, const jintArray PtrPyr2,
+        jint NmbPri, const jintArray PtrPri1, const jintArray PtrPri2,
+        jint NmbHex, const jintArray PtrHex1, const jintArray PtrHex2,
+        jint BasIdx, jint NmbThr
+        ){
     long c = 0;
     return c;
 }
 
 JNIEXPORT jlong JNICALL
-Java_com_ds_octreelib_Octree_LolNewOctreeFromSTL(JNIEnv* env, jobject this){
+Java_com_ds_octreelib_Octree_LolNewOctreeFromSTL(
+        JNIEnv* env, jobject this,
+        jint NmbTri, const jdoubleArray PtrCrd1, const jdoubleArray PtrCrd2,
+        jint BasIdx, jint NmbThr
+        ){
     long c = 0;
     return c;
 }
 
 JNIEXPORT jint JNICALL
-Java_com_ds_octreelib_Octree_LolFreeOctree(JNIEnv* env, jobject this){
+Java_com_ds_octreelib_Octree_LolFreeOctree(
+        JNIEnv* env, jobject this,
+        jlong OctIdx
+        ){
     int c = 0;
     return c;
 }
 
 JNIEXPORT jint JNICALL
-Java_com_ds_octreelib_Octree_LolGetBoundingBox(JNIEnv* env, jobject this){
+Java_com_ds_octreelib_Octree_LolGetBoundingBox(
+        JNIEnv* env, jobject this,
+        jlong OctIdx, jint typ, jint MaxItm, jintArray ItmTab,
+        jdoubleArray MinCrd, jdoubleArray MaxCrd, jint ThrIdx
+        ){
     int c = 0;
     return c;
 }
 
 JNIEXPORT jint JNICALL
-Java_com_ds_octreelib_Octree_LolGetNearest(JNIEnv* env, jobject this){
+Java_com_ds_octreelib_Octree_LolGetNearest(
+        JNIEnv* env, jobject this,
+        int64_t OctIdx, itg typ, fpn *VerCrd, fpn *MinDis, fpn MaxDis,
+        itg (UsrPrc)(void *, itg), void *UsrDat, itg ThrIdx
+        ){
     int c = 0;
     return c;
 }
 
 JNIEXPORT jint JNICALL
-Java_com_ds_octreelib_Octree_LolIntersectSurface(JNIEnv* env, jobject this){
+Java_com_ds_octreelib_Octree_LolIntersectSurface(
+        JNIEnv* env, jobject this){
     int c = 0;
     return c;
 }
 
 JNIEXPORT jint JNICALL
-Java_com_ds_octreelib_Octree_LolIsInside(JNIEnv* env, jobject this){
+Java_com_ds_octreelib_Octree_LolIsInside(
+        JNIEnv* env, jobject this){
     int c = 0;
     return c;
 }
 
 JNIEXPORT jint JNICALL
-Java_com_ds_octreelib_Octree_LolProjectVertex(JNIEnv* env, jobject this){
+Java_com_ds_octreelib_Octree_LolProjectVertex(
+        JNIEnv* env, jobject this){
     int c = 0;
     return c;
 }
 
 JNIEXPORT jint JNICALL
-Java_com_ds_octreelib_Octree_LolCheckIntersections(JNIEnv* env, jobject this){
+Java_com_ds_octreelib_Octree_LolCheckIntersections(
+        JNIEnv* env, jobject this){
     int c = 0;
     return c;
 }
