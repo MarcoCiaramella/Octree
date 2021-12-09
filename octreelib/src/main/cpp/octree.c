@@ -27,6 +27,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdint.h>
+#include <jni.h>
 #include "octree.h"
 
 
@@ -3612,5 +3613,53 @@ itg call(lolgetnearest)(int64_t *OctIdx, itg *typ, fpn *MinCrd, fpn *MinDis,
 JNIEXPORT jlong JNICALL
 Java_com_ds_octreelib_Octree_LolNewOctree(JNIEnv* env, jobject this){
     long c = 0;
+    return c;
+}
+
+JNIEXPORT jlong JNICALL
+Java_com_ds_octreelib_Octree_LolNewOctreeFromSTL(JNIEnv* env, jobject this){
+    long c = 0;
+    return c;
+}
+
+JNIEXPORT jint JNICALL
+Java_com_ds_octreelib_Octree_LolFreeOctree(JNIEnv* env, jobject this){
+    int c = 0;
+    return c;
+}
+
+JNIEXPORT jint JNICALL
+Java_com_ds_octreelib_Octree_LolGetBoundingBox(JNIEnv* env, jobject this){
+    int c = 0;
+    return c;
+}
+
+JNIEXPORT jint JNICALL
+Java_com_ds_octreelib_Octree_LolGetNearest(JNIEnv* env, jobject this){
+    int c = 0;
+    return c;
+}
+
+JNIEXPORT jint JNICALL
+Java_com_ds_octreelib_Octree_LolIntersectSurface(JNIEnv* env, jobject this){
+    int c = 0;
+    return c;
+}
+
+JNIEXPORT jint JNICALL
+Java_com_ds_octreelib_Octree_LolIsInside(JNIEnv* env, jobject this){
+    int c = 0;
+    return c;
+}
+
+JNIEXPORT jint JNICALL
+Java_com_ds_octreelib_Octree_LolProjectVertex(JNIEnv* env, jobject this){
+    int c = 0;
+    return c;
+}
+
+JNIEXPORT jint JNICALL
+Java_com_ds_octreelib_Octree_LolCheckIntersections(JNIEnv* env, jobject this){
+    int c = 0;
     return c;
 }
