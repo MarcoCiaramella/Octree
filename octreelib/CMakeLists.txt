@@ -1,10 +1,10 @@
 
-##########################
-# BUILD THE STATIC LIBRARY
-##########################
+cmake_minimum_required(VERSION 3.4.1)
 
-add_library(OL.1 octree.c)
-install (FILES libol1.h libol1.ins DESTINATION include COMPONENT headers)
-install (TARGETS OL.1 EXPORT libOL-target DESTINATION lib COMPONENT libraries)
-install (EXPORT libOL-target DESTINATION lib/cmake/${PROJECT_NAME})
-export  (PACKAGE libOL) 
+add_library(
+        Octree
+        SHARED
+        src/main/cpp/octree.c
+)
+
+include_directories(src/main/cpp/)
