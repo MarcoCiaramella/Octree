@@ -3613,7 +3613,7 @@ itg call(lolgetnearest)(int64_t *OctIdx, itg *typ, fpn *MinCrd, fpn *MinDis,
 /* JNI */
 
 itg UsrPrcCallback(void* a, itg b){
-
+    return 0;
 }
 
 JNIEXPORT jlong JNICALL
@@ -3666,6 +3666,7 @@ Java_com_ds_octreelib_Octree_LolGetBoundingBox(
     return LolGetBoundingBox(OctIdx, typ, MaxItm, ItmTab, MinCrd, MaxCrd, ThrIdx);
 }
 
+/*
 JNIEXPORT jint JNICALL
 Java_com_ds_octreelib_Octree_LolGetNearest(
         JNIEnv* env, jobject this,
@@ -3683,6 +3684,25 @@ Java_com_ds_octreelib_Octree_LolIntersectSurface(
         jint ThrIdx
         ){
     return LolIntersectSurface(OctIdx, VerCrd, VerTng, MinDis, MaxDis, UsrPrcCallback, (void*)UsrDat, ThrIdx);
+}
+*/
+
+JNIEXPORT jint JNICALL
+Java_com_ds_octreelib_Octree_LolGetNearest(
+        JNIEnv* env, jobject this,
+        jlong OctIdx, jint typ, jdoubleArray VerCrd, jdoubleArray MinDis, jdouble MaxDis,
+        jint ThrIdx
+){
+    return LolGetNearest(OctIdx, typ, VerCrd, MinDis, MaxDis, NULL, NULL, ThrIdx);
+}
+
+JNIEXPORT jint JNICALL
+Java_com_ds_octreelib_Octree_LolIntersectSurface(
+        JNIEnv* env, jobject this,
+        jlong OctIdx, jdoubleArray VerCrd, jdoubleArray VerTng, jdoubleArray MinDis,
+        jdouble MaxDis, jint ThrIdx
+){
+    return LolIntersectSurface(OctIdx, VerCrd, VerTng, MinDis, MaxDis, NULL, NULL, ThrIdx);
 }
 
 JNIEXPORT jint JNICALL

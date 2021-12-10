@@ -20,8 +20,8 @@ public class Octree {
     public native int LolFreeOctree(long OctIdx);
     public native int LolGetBoundingBox(long OctIdx, int typ, int MaxItm, int[] ItmTab,
                                         double[] MinCrd, double[] MaxCrd, int ThrIdx);
-    public native int LolGetNearest();
-    public native int LolIntersectSurface();
+    public native int LolGetNearest(long OctIdx, int typ, double[] VerCrd, double[] MinDis, double MaxDis, int ThrIdx);
+    public native int LolIntersectSurface(long OctIdx, double[] VerCrd, double[] VerTng, double[] MinDis, double MaxDis, int ThrIdx);
     public native int LolIsInside(long OctIdx, double[] VerCrd, double[] VerTng, int ThrIdx);
     public native int LolProjectVertex(long OctIdx, double[] VerCrd, int typ,
                                        int MinItm, double[] MinCrd, int ThrIdx);
