@@ -3617,7 +3617,7 @@ itg UsrPrcCallback(void* a, itg b){
 }
 
 JNIEXPORT jlong JNICALL
-Java_com_ds_octreelib_Octree_LolNewOctree(
+Java_com_ds_octreelib_Octree_newOctree(
         JNIEnv* env, jobject this,
         jint NmbVer, jdoubleArray PtrCrd1, jdoubleArray PtrCrd2,
         jint NmbEdg, jintArray PtrEdg1, jintArray PtrEdg2,
@@ -3641,7 +3641,7 @@ Java_com_ds_octreelib_Octree_LolNewOctree(
 }
 
 JNIEXPORT jlong JNICALL
-Java_com_ds_octreelib_Octree_LolNewOctreeFromSTL(
+Java_com_ds_octreelib_Octree_newOctreeFromSTL(
         JNIEnv* env, jobject this,
         jint NmbTri, jdoubleArray PtrCrd1, jdoubleArray PtrCrd2,
         jint BasIdx, jint NmbThr
@@ -3650,7 +3650,7 @@ Java_com_ds_octreelib_Octree_LolNewOctreeFromSTL(
 }
 
 JNIEXPORT jint JNICALL
-Java_com_ds_octreelib_Octree_LolFreeOctree(
+Java_com_ds_octreelib_Octree_freeOctree(
         JNIEnv* env, jobject this,
         jlong OctIdx
         ){
@@ -3658,7 +3658,7 @@ Java_com_ds_octreelib_Octree_LolFreeOctree(
 }
 
 JNIEXPORT jint JNICALL
-Java_com_ds_octreelib_Octree_LolGetBoundingBox(
+Java_com_ds_octreelib_Octree_getWithinBoundingBox(
         JNIEnv* env, jobject this,
         jlong OctIdx, jint typ, jint MaxItm, jintArray ItmTab,
         jdoubleArray MinCrd, jdoubleArray MaxCrd, jint ThrIdx
@@ -3688,7 +3688,7 @@ Java_com_ds_octreelib_Octree_LolIntersectSurface(
 */
 
 JNIEXPORT jint JNICALL
-Java_com_ds_octreelib_Octree_LolGetNearest(
+Java_com_ds_octreelib_Octree_getNearest(
         JNIEnv* env, jobject this,
         jlong OctIdx, jint typ, jdoubleArray VerCrd, jdoubleArray MinDis, jdouble MaxDis,
         jint ThrIdx
@@ -3697,7 +3697,7 @@ Java_com_ds_octreelib_Octree_LolGetNearest(
 }
 
 JNIEXPORT jint JNICALL
-Java_com_ds_octreelib_Octree_LolIntersectSurface(
+Java_com_ds_octreelib_Octree_getIntersectedSurface(
         JNIEnv* env, jobject this,
         jlong OctIdx, jdoubleArray VerCrd, jdoubleArray VerTng, jdoubleArray MinDis,
         jdouble MaxDis, jint ThrIdx
@@ -3706,7 +3706,7 @@ Java_com_ds_octreelib_Octree_LolIntersectSurface(
 }
 
 JNIEXPORT jint JNICALL
-Java_com_ds_octreelib_Octree_LolIsInside(
+Java_com_ds_octreelib_Octree_isInside(
         JNIEnv* env, jobject this,
         jlong OctIdx, jdoubleArray VerCrd, jdoubleArray VerTng, jint ThrIdx
         ){
@@ -3714,7 +3714,7 @@ Java_com_ds_octreelib_Octree_LolIsInside(
 }
 
 JNIEXPORT jint JNICALL
-Java_com_ds_octreelib_Octree_LolProjectVertex(
+Java_com_ds_octreelib_Octree_projectVertex(
         JNIEnv* env, jobject this,
         jlong OctIdx, jdoubleArray VerCrd, jint typ,
         jint MinItm, jdoubleArray MinCrd, jint ThrIdx
@@ -3723,7 +3723,7 @@ Java_com_ds_octreelib_Octree_LolProjectVertex(
 }
 
 JNIEXPORT jint JNICALL
-Java_com_ds_octreelib_Octree_LolCheckIntersections(
+Java_com_ds_octreelib_Octree_checkIntersections(
         JNIEnv* env, jobject this,
         jlong OctIdx, jint MaxItm, jintArray ItmTab
         ){

@@ -6,7 +6,7 @@ public class Octree {
         System.loadLibrary("Octree");
     }
 
-    public native long LolNewOctree(int NmbVer, double[] PtrCrd1, double[] PtrCrd2,
+    public native long newOctree(int NmbVer, double[] PtrCrd1, double[] PtrCrd2,
                                     int NmbEdg, int[] PtrEdg1, int[] PtrEdg2,
                                     int NmbTri, int[] PtrTri1, int[] PtrTri2,
                                     int NmbQad, int[] PtrQad1, int[] PtrQad2,
@@ -15,15 +15,15 @@ public class Octree {
                                     int NmbPri, int[] PtrPri1, int[] PtrPri2,
                                     int NmbHex, int[] PtrHex1, int[] PtrHex2,
                                     int BasIdx, int NmbThr);
-    public native long LolNewOctreeFromSTL(int NmbTri, double[] PtrCrd1, double[] PtrCrd2,
+    public native long newOctreeFromSTL(int NmbTri, double[] PtrCrd1, double[] PtrCrd2,
                                            int BasIdx, int NmbThr);
-    public native int LolFreeOctree(long OctIdx);
-    public native int LolGetBoundingBox(long OctIdx, int typ, int MaxItm, int[] ItmTab,
+    public native int freeOctree(long OctIdx);
+    public native int getWithinBoundingBox(long OctIdx, int typ, int MaxItm, int[] ItmTab,
                                         double[] MinCrd, double[] MaxCrd, int ThrIdx);
-    public native int LolGetNearest(long OctIdx, int typ, double[] VerCrd, double[] MinDis, double MaxDis, int ThrIdx);
-    public native int LolIntersectSurface(long OctIdx, double[] VerCrd, double[] VerTng, double[] MinDis, double MaxDis, int ThrIdx);
-    public native int LolIsInside(long OctIdx, double[] VerCrd, double[] VerTng, int ThrIdx);
-    public native int LolProjectVertex(long OctIdx, double[] VerCrd, int typ,
+    public native int getNearest(long OctIdx, int typ, double[] VerCrd, double[] MinDis, double MaxDis, int ThrIdx);
+    public native int getIntersectedSurface(long OctIdx, double[] VerCrd, double[] VerTng, double[] MinDis, double MaxDis, int ThrIdx);
+    public native int isInside(long OctIdx, double[] VerCrd, double[] VerTng, int ThrIdx);
+    public native int projectVertex(long OctIdx, double[] VerCrd, int typ,
                                        int MinItm, double[] MinCrd, int ThrIdx);
-    public native int LolCheckIntersections(long OctIdx, int MaxItm, int[] ItmTab);
+    public native int checkIntersections(long OctIdx, int MaxItm, int[] ItmTab);
 }
