@@ -6,6 +6,16 @@ public class Octree {
         System.loadLibrary("Octree");
     }
 
+    public static final int VER = 1;
+    public static final int EDG = 2;
+    public static final int TRI = 3;
+    public static final int QAD = 4;
+    public static final int TET = 5;
+    public static final int PYR = 6;
+    public static final int PRI = 7;
+    public static final int HEX = 8;
+    public static final int TYP = 9;
+
     private final long index;
 
     /**
@@ -96,7 +106,7 @@ public class Octree {
      * is stored in a user-provided table whose size must be given and will limit the number of
      * returned included elements.
      *
-     * @param typ kind of mesh entity to look for: LolTypVer, LolTypEdg, LolTypTri, LolTypQad or LolTypTet
+     * @param typ kind of mesh entity to look for: VER, EDG, TRI, QAD or TET
      * @param itmTab a user-provided table that will be filled with the intersected elements
      * @param minCrd coordinates of the lower bounding box corner
      * @param maxCrd coordinates of the upper bounding box corner
@@ -104,7 +114,7 @@ public class Octree {
      * @return the number of entities included in the box
      */
     public int getWithinBoundingBox(int typ, int[] itmTab,
-                                     double[] minCrd, double[] maxCrd, int thrIdx){
+                                    double[] minCrd, double[] maxCrd, int thrIdx){
         return getWithinBoundingBox(index, typ, itmTab.length, itmTab, minCrd, maxCrd, thrIdx);
     }
 
@@ -114,7 +124,7 @@ public class Octree {
      * source point. This procedure can safely be called in parallel as long as the concurrent
      * caller’s ID are unique.
      *
-     * @param typ kind of entity to look for : LolTypVer, LolTypEdg, LolTypTri, LolTypQad or LolTypTet
+     * @param typ kind of entity to look for : VER, EDG, TRI, QAD or TET
      * @param verCrd coordinates of the source point
      * @param minDis a set of coordinates that will be filled with the closest projection
      * @param maxDis allows restricting the search to a maximum distance, set it to 0 for unbounded search
@@ -166,7 +176,7 @@ public class Octree {
      * by the single precision floating point smallest value (i.e. 10E-7).
      *
      * @param verCrd coordinates of the vertex to project
-     * @param typ kind of mesh entity to project on: LolTypVer, LolTypEdg, LolTypTri, LolTypQad or LolTypTet
+     * @param typ kind of mesh entity to project on: VER, EDG, TRI, QAD or TET
      * @param idx index of the mesh entity
      * @param crd coordinates that will receive the projection
      * @param thrIdx thread or calling process number or 0 in serial case
@@ -187,15 +197,15 @@ public class Octree {
                                   int nmbHex, int[] hex1, int[] hex2,
                                   int basIdx, int nmbThr);
     private native long newOctreeFromSTL(int nmbTri, double[] tri1, double[] tri2,
-                                        int basIdx, int nmbThr);
+                                         int basIdx, int nmbThr);
     private native int freeOctree(long octIdx);
     private native int getWithinBoundingBox(long octIdx, int typ, int maxItm, int[] itmTab,
-                                           double[] minCrd, double[] maxCrd, int thrIdx);
+                                            double[] minCrd, double[] maxCrd, int thrIdx);
     private native int getNearest(long octIdx, int typ, double[] verCrd, double[] minDis, double maxDis, int thrIdx);
     private native int getIntersectedSurface(long octIdx, double[] verCrd, double[] verTng, double[] minDis, double maxDis, int thrIdx);
     private native int isInside(long octIdx, double[] verCrd, double[] verTng, int thrIdx);
     private native int projectVertex(long octIdx, double[] verCrd, int typ,
-                                    int idx, double[] crd, int thrIdx);
+                                     int idx, double[] crd, int thrIdx);
     // Unused
     private native int checkIntersections(long octIdx, int maxItm, int[] itmTab);
 }

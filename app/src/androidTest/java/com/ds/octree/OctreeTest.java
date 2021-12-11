@@ -22,6 +22,8 @@ import org.junit.runner.RunWith;
 @RunWith(AndroidJUnit4.class)
 public class OctreeTest {
 
+    private Octree octree;
+
     @Test
     public void constructor_isCorrect() {
         double[][] vertices = {{2,-3,5.2}, {3.4,6,8.2}, {5,1,3}, {3,4,1}};
@@ -67,7 +69,7 @@ public class OctreeTest {
         ply.load();
         double[][] vertices = toArrOfArr(ply.getVertices(), 3);
         int[][] triangles = toArrOfArr(ply.getIndices(), 3);
-        long index = new Octree(vertices.length, vertices[0], vertices[1],
+        octree = new Octree(vertices.length, vertices[0], vertices[1],
                 0, null, null,
                 2, triangles[0], triangles[1],
                 0, null, null,
@@ -75,7 +77,18 @@ public class OctreeTest {
                 0, null, null,
                 0, null, null,
                 0, null, null,
-                0, 1).getIndex();
+                0, 1);
+        long index = octree.getIndex();
         assertNotEquals(0, index);
+    }
+
+    @Test
+    public void free_isCorrect() {
+        octree.free();
+    }
+
+    @Test
+    public void getWithinBoundingBox_isCorrect() {
+        octree.getWithinBoundingBox();
     }
 }
