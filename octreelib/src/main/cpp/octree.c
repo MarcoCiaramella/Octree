@@ -3735,9 +3735,9 @@ JNIEXPORT jint JNICALL
 Java_com_ds_octreelib_Octree_projectVertex(
         JNIEnv* env, jobject this,
         jlong OctIdx, jdoubleArray VerCrd, jint typ,
-        jint MinItm, jdoubleArray MinCrd, jint ThrIdx
+        jint idx, jdoubleArray crd, jint ThrIdx
         ){
-    return LolProjectVertex(OctIdx, VerCrd, typ, MinItm, MinCrd, ThrIdx);
+    return LolProjectVertex(OctIdx, VerCrd, typ, idx, crd, ThrIdx);
 }
 
 JNIEXPORT jint JNICALL
