@@ -3629,14 +3629,32 @@ Java_com_ds_octreelib_Octree_newOctree(
         jint NmbHex, jintArray PtrHex1, jintArray PtrHex2,
         jint BasIdx, jint NmbThr
         ){
-    return LolNewOctree(NmbVer, PtrCrd1, PtrCrd2,
-    NmbEdg, PtrEdg1, PtrEdg2,
-    NmbTri, PtrTri1, PtrTri2,
-    NmbQad, PtrQad1, PtrQad2,
-    NmbTet, PtrTet1, PtrTet2,
-    NmbPyr, PtrPyr1, PtrPyr2,
-    NmbPri, PtrPri1, PtrPri2,
-    NmbHex, PtrHex1, PtrHex2,
+
+    jdouble* vert1 = PtrCrd1 ? (*env)->GetDoubleArrayElements(env, PtrCrd1, 0) : NULL;
+    jdouble* vert2 = PtrCrd2 ? (*env)->GetDoubleArrayElements(env, PtrCrd2, 0) : NULL;
+    jint* edg1 = PtrEdg1 ? (*env)->GetIntArrayElements(env, PtrEdg1, 0) : NULL;
+    jint* edg2 = PtrEdg2 ? (*env)->GetIntArrayElements(env, PtrEdg2, 0) : NULL;
+    jint* tri1 = PtrTri1 ? (*env)->GetIntArrayElements(env, PtrTri1, 0) : NULL;
+    jint* tri2 = PtrTri2 ? (*env)->GetIntArrayElements(env, PtrTri2, 0) : NULL;
+    jint* qad1 = PtrQad1 ? (*env)->GetIntArrayElements(env, PtrQad1, 0) : NULL;
+    jint* qad2 = PtrQad2 ? (*env)->GetIntArrayElements(env, PtrQad2, 0) : NULL;
+    jint* tet1 = PtrTet1 ? (*env)->GetIntArrayElements(env, PtrTet1, 0) : NULL;
+    jint* tet2 = PtrTet2 ? (*env)->GetIntArrayElements(env, PtrTet2, 0) : NULL;
+    jint* pyr1 = PtrPyr1 ? (*env)->GetIntArrayElements(env, PtrPyr1, 0) : NULL;
+    jint* pyr2 = PtrPyr2 ? (*env)->GetIntArrayElements(env, PtrPyr2, 0) : NULL;
+    jint* pri1 = PtrPri1 ? (*env)->GetIntArrayElements(env, PtrPri1, 0) : NULL;
+    jint* pri2 = PtrPri2 ? (*env)->GetIntArrayElements(env, PtrPri2, 0) : NULL;
+    jint* hex1 = PtrHex1 ? (*env)->GetIntArrayElements(env, PtrHex1, 0) : NULL;
+    jint* hex2 = PtrHex2 ? (*env)->GetIntArrayElements(env, PtrHex2, 0) : NULL;
+
+    return LolNewOctree(NmbVer, vert1, vert2,
+    NmbEdg, edg1, edg2,
+    NmbTri, tri1, tri2,
+    NmbQad, qad1, qad2,
+    NmbTet, tet1, tet2,
+    NmbPyr, pyr1, pyr2,
+    NmbPri, pri1, pri2,
+    NmbHex, hex1, hex2,
     BasIdx, NmbThr);
 }
 
