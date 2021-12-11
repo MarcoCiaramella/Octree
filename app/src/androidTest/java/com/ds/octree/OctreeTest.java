@@ -1,9 +1,11 @@
-package com.ds.octreelib;
+package com.ds.octree;
 
 import static org.junit.Assert.assertNotEquals;
 
 
 import androidx.test.ext.junit.runners.AndroidJUnit4;
+
+import com.ds.octreelib.Octree;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
