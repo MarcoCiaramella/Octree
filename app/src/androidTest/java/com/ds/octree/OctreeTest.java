@@ -23,7 +23,7 @@ import org.junit.runner.RunWith;
 public class OctreeTest {
 
     @Test
-    public void constructor1_isCorrect() {
+    public void constructor_isCorrect() {
         double[][] vertices = {{2,-3,5.2}, {3.4,6,8.2}, {5,1,3}, {3,4,1}};
         int[][] triangles = {{1,2,3}, {2,3,4}};
         long index = new Octree(4, vertices[0], vertices[1],
@@ -61,7 +61,7 @@ public class OctreeTest {
     }
 
     @Test
-    public void constructor2_isCorrect() {
+    public void constructorFromFile_isCorrect() {
         Context appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
         Ply ply = new Ply(appContext, "monkey.ply");
         ply.load();
