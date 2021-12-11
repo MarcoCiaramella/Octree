@@ -38,7 +38,7 @@ public class Octree {
      * @param hex1  first hexahedron’s nodes indices
      * @param hex2  second hexahedron’s nodes indices
      * @param basIdx starting index of the user’s tables: 0 or 1
-     * @param nmbThr aximum number of threads or process that can perform requests concurrently: must be 1 or more
+     * @param nmbThr maximum number of threads or process that can perform requests concurrently: must be 1 or more
      */
     public Octree(int nmbVer, double[] ver1, double[] ver2,
                   int nmbEdg, int[] edg1, int[] edg2,
@@ -50,16 +50,34 @@ public class Octree {
                   int nmbHex, int[] hex1, int[] hex2,
                   int basIdx, int nmbThr){
         index = newOctree(nmbVer, ver1, ver2,
-        nmbEdg, edg1, edg2,
-        nmbTri, tri1, tri2,
-        nmbQad, qad1, qad2,
-        nmbTet, tet1, tet2,
-        nmbPyr, pyr1, pyr2,
-        nmbPri, pri1, pri2,
-        nmbHex, hex1, hex2,
-        basIdx, nmbThr);
+                nmbEdg, edg1, edg2,
+                nmbTri, tri1, tri2,
+                nmbQad, qad1, qad2,
+                nmbTet, tet1, tet2,
+                nmbPyr, pyr1, pyr2,
+                nmbPri, pri1, pri2,
+                nmbHex, hex1, hex2,
+                basIdx, nmbThr);
     }
 
+    /**
+     * Builds an octree from a mesh in STL format.
+     * @param nmbTri number of triangles to insert in the octree
+     * @param tri1 first triangle’s nodes indices
+     * @param tri2 second triangle’s nodes indices
+     * @param basIdx starting index of the user’s tables: 0 or 1
+     * @param nmbThr maximum number of threads or process that can perform requests concurrently: must be 1 or more
+     */
+    public Octree(int nmbTri, double[] tri1, double[] tri2,
+                  int basIdx, int nmbThr){
+        index = newOctreeFromSTL(nmbTri, tri1, tri2,
+                basIdx, nmbThr);
+    }
+
+    /**
+     * Returns a unique octree index or 0 in case of failure.
+     * @return the index
+     */
     public long getIndex() {
         return index;
     }
@@ -73,15 +91,15 @@ public class Octree {
                                   int nmbPri, int[] pri1, int[] pri2,
                                   int nmbHex, int[] hex1, int[] hex2,
                                   int basIdx, int nmbThr);
-    public native long newOctreeFromSTL(int NmbTri, double[] PtrCrd1, double[] PtrCrd2,
-                                           int BasIdx, int NmbThr);
+    private native long newOctreeFromSTL(int nmbTri, double[] tri1, double[] tri2,
+                                        int basIdx, int nmbThr);
     public native int freeOctree(long OctIdx);
     public native int getWithinBoundingBox(long OctIdx, int typ, int MaxItm, int[] ItmTab,
-                                        double[] MinCrd, double[] MaxCrd, int ThrIdx);
+                                           double[] MinCrd, double[] MaxCrd, int ThrIdx);
     public native int getNearest(long OctIdx, int typ, double[] VerCrd, double[] MinDis, double MaxDis, int ThrIdx);
     public native int getIntersectedSurface(long OctIdx, double[] VerCrd, double[] VerTng, double[] MinDis, double MaxDis, int ThrIdx);
     public native int isInside(long OctIdx, double[] VerCrd, double[] VerTng, int ThrIdx);
     public native int projectVertex(long OctIdx, double[] VerCrd, int typ,
-                                       int MinItm, double[] MinCrd, int ThrIdx);
+                                    int MinItm, double[] MinCrd, int ThrIdx);
     public native int checkIntersections(long OctIdx, int MaxItm, int[] ItmTab);
 }
