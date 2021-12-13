@@ -3619,52 +3619,27 @@ itg UsrPrcCallback(void* a, itg b){
 JNIEXPORT jlong JNICALL
 Java_com_ds_octreelib_Octree_newOctree(
         JNIEnv* env, jobject this,
-        jint NmbVer, jdoubleArray PtrCrd1, jdoubleArray PtrCrd2,
-        jint NmbEdg, jintArray PtrEdg1, jintArray PtrEdg2,
-        jint NmbTri, jintArray PtrTri1, jintArray PtrTri2,
-        jint NmbQad, jintArray PtrQad1, jintArray PtrQad2,
-        jint NmbTet, jintArray PtrTet1, jintArray PtrTet2,
-        jint NmbPyr, jintArray PtrPyr1, jintArray PtrPyr2,
-        jint NmbPri, jintArray PtrPri1, jintArray PtrPri2,
-        jint NmbHex, jintArray PtrHex1, jintArray PtrHex2,
+        jint NmbVer, jdoubleArray PtrCrd,
+        jint NmbEdg, jintArray PtrEdg,
+        jint NmbTri, jintArray PtrTri,
+        jint NmbQad, jintArray PtrQad,
         jint BasIdx, jint NmbThr
         ){
 
-    jdouble* vert1 = PtrCrd1 ? (*env)->GetDoubleArrayElements(env, PtrCrd1, 0) : NULL;
-    jdouble* vert2 = PtrCrd2 ? (*env)->GetDoubleArrayElements(env, PtrCrd2, 0) : NULL;
-    jint* edg1 = PtrEdg1 ? (*env)->GetIntArrayElements(env, PtrEdg1, 0) : NULL;
-    jint* edg2 = PtrEdg2 ? (*env)->GetIntArrayElements(env, PtrEdg2, 0) : NULL;
-    jint* tri1 = PtrTri1 ? (*env)->GetIntArrayElements(env, PtrTri1, 0) : NULL;
-    jint* tri2 = PtrTri2 ? (*env)->GetIntArrayElements(env, PtrTri2, 0) : NULL;
-    jint* qad1 = PtrQad1 ? (*env)->GetIntArrayElements(env, PtrQad1, 0) : NULL;
-    jint* qad2 = PtrQad2 ? (*env)->GetIntArrayElements(env, PtrQad2, 0) : NULL;
-    jint* tet1 = PtrTet1 ? (*env)->GetIntArrayElements(env, PtrTet1, 0) : NULL;
-    jint* tet2 = PtrTet2 ? (*env)->GetIntArrayElements(env, PtrTet2, 0) : NULL;
-    jint* pyr1 = PtrPyr1 ? (*env)->GetIntArrayElements(env, PtrPyr1, 0) : NULL;
-    jint* pyr2 = PtrPyr2 ? (*env)->GetIntArrayElements(env, PtrPyr2, 0) : NULL;
-    jint* pri1 = PtrPri1 ? (*env)->GetIntArrayElements(env, PtrPri1, 0) : NULL;
-    jint* pri2 = PtrPri2 ? (*env)->GetIntArrayElements(env, PtrPri2, 0) : NULL;
-    jint* hex1 = PtrHex1 ? (*env)->GetIntArrayElements(env, PtrHex1, 0) : NULL;
-    jint* hex2 = PtrHex2 ? (*env)->GetIntArrayElements(env, PtrHex2, 0) : NULL;
+    jdouble* vert = PtrCrd ? (*env)->GetDoubleArrayElements(env, PtrCrd, 0) : NULL;
+    jint* edg = PtrEdg ? (*env)->GetIntArrayElements(env, PtrEdg, 0) : NULL;
+    jint* tri = PtrTri ? (*env)->GetIntArrayElements(env, PtrTri, 0) : NULL;
+    jint* qad = PtrQad ? (*env)->GetIntArrayElements(env, PtrQad, 0) : NULL;
 
-    return LolNewOctree(NmbVer, vert1, vert2,
-    NmbEdg, edg1, edg2,
-    NmbTri, tri1, tri2,
-    NmbQad, qad1, qad2,
-    NmbTet, tet1, tet2,
-    NmbPyr, pyr1, pyr2,
-    NmbPri, pri1, pri2,
-    NmbHex, hex1, hex2,
+    return LolNewOctree(NmbVer, vert, vert+3,
+    NmbEdg, edg, edg+2,
+    NmbTri, tri, tri+3,
+    NmbQad, qad, qad+4,
+    0, NULL, NULL,
+    0, NULL, NULL,
+    0, NULL, NULL,
+    0, NULL, NULL,
     BasIdx, NmbThr);
-}
-
-JNIEXPORT jlong JNICALL
-Java_com_ds_octreelib_Octree_newOctreeFromSTL(
-        JNIEnv* env, jobject this,
-        jint NmbTri, jdoubleArray PtrCrd1, jdoubleArray PtrCrd2,
-        jint BasIdx, jint NmbThr
-        ){
-    return LolNewOctreeFromSTL(NmbTri, PtrCrd1, PtrCrd2, BasIdx, NmbThr);
 }
 
 JNIEXPORT jint JNICALL
@@ -3738,12 +3713,4 @@ Java_com_ds_octreelib_Octree_projectVertex(
         jint idx, jdoubleArray crd, jint ThrIdx
         ){
     return LolProjectVertex(OctIdx, VerCrd, typ, idx, crd, ThrIdx);
-}
-
-JNIEXPORT jint JNICALL
-Java_com_ds_octreelib_Octree_checkIntersections(
-        JNIEnv* env, jobject this,
-        jlong OctIdx, jint MaxItm, jintArray ItmTab
-        ){
-    return LolCheckIntersections(OctIdx, MaxItm, ItmTab);
 }

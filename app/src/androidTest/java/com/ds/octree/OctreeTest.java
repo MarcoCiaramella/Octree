@@ -30,55 +30,27 @@ public class OctreeTest {
         assertNotEquals(0, index);
     }
 
-    private double[][] toArrOfArr(float[] arr, int groupSize){
-        double[][] arrOfArr = new double[arr.length / groupSize][];
-        for (int i = 0; i < arrOfArr.length; i++){
-            arrOfArr[i] = new double[groupSize];
-            for (int j = 0; j < arrOfArr[i].length; j++){
-                arrOfArr[i][j] = arr[i*groupSize + j];
-            }
-        }
-        return arrOfArr;
-    }
-
-    private int[][] toArrOfArr(int[] arr, int groupSize){
-        int[][] arrOfArr = new int[arr.length / groupSize][];
-        for (int i = 0; i < arrOfArr.length; i++){
-            arrOfArr[i] = new int[groupSize];
-            for (int j = 0; j < arrOfArr[i].length; j++){
-                arrOfArr[i][j] = arr[i*groupSize + j];
-            }
-        }
-        return arrOfArr;
-    }
-
     private Octree newOctree(){
-        double[][] vertices = {{2,-3,5.2}, {3.4,6,8.2}, {5,1,3}, {3,4,1}};
-        int[][] triangles = {{1,2,3}, {2,3,4}};
-        return new Octree(4, vertices[0], vertices[1],
-                0, null, null,
-                2, triangles[0], triangles[1],
-                0, null, null,
-                0, null, null,
-                0, null, null,
-                0, null, null,
-                0, null, null,
+        double[] vertices = {2,-3,5.2,3.4,6,8.2,5,1,3,3,4,1};
+        int[] triangles = {1,2,3,2,3,4};
+        return new Octree(4, vertices,
+                0, null,
+                2, triangles,
+                0, null,
                 0, 1);
     }
 
     private Octree newOctree(Context context, String filename){
         Ply ply = new Ply(context, filename);
         ply.load();
-        double[][] vertices = toArrOfArr(ply.getVertices(), 3);
-        int[][] triangles = toArrOfArr(ply.getIndices(), 3);
-        return new Octree(vertices.length, vertices[0], vertices[1],
-                0, null, null,
-                2, triangles[0], triangles[1],
-                0, null, null,
-                0, null, null,
-                0, null, null,
-                0, null, null,
-                0, null, null,
+        double[] vertices = new double[ply.getVertices().length];
+        for (int i = 0; i < vertices.length; i++){
+            vertices[i] = ply.getVertices()[i];
+        }
+        return new Octree(vertices.length/3, vertices,
+                0, null,
+                2, ply.getIndices(),
+                0, null,
                 0, 1);
     }
 
@@ -91,6 +63,9 @@ public class OctreeTest {
 
     private double[] minCoord(float[] vertices){
         double[] min = new double[3];
+        min[0] = vertices[0];
+        min[1] = vertices[1];
+        min[2] = vertices[2];
         for (int i = 0; i < vertices.length; i += 3) {
             min[0] = Math.min(vertices[i], min[0]);
             min[1] = Math.min(vertices[i+1], min[1]);
@@ -101,6 +76,9 @@ public class OctreeTest {
 
     private double[] maxCoord(float[] vertices){
         double[] max = new double[3];
+        max[0] = vertices[0];
+        max[1] = vertices[1];
+        max[2] = vertices[2];
         for (int i = 0; i < vertices.length; i += 3) {
             max[0] = Math.max(vertices[i], max[0]);
             max[1] = Math.max(vertices[i+1], max[1]);
@@ -115,7 +93,7 @@ public class OctreeTest {
         Context context = InstrumentationRegistry.getInstrumentation().getTargetContext();
         Ply ply = new Ply(context, "cube_inters.ply");
         ply.load();
-        int n = newOctree(context, "monkey.ply").getWithinBoundingBox(Octree.TRI, itm, minCoord(ply.getVertices()), maxCoord(ply.getVertices()), 0);
+        int n = newOctree(context, "monkey.ply").getWithinBoundingBox(Octree.VER, itm, minCoord(ply.getVertices()), maxCoord(ply.getVertices()), 0);
         assertTrue("n = "+n, n > 0);
     }
 
@@ -125,7 +103,7 @@ public class OctreeTest {
         Context context = InstrumentationRegistry.getInstrumentation().getTargetContext();
         Ply ply = new Ply(context, "cube_not_inters.ply");
         ply.load();
-        int n = newOctree(context, "monkey.ply").getWithinBoundingBox(Octree.TRI, itm, minCoord(ply.getVertices()), maxCoord(ply.getVertices()), 0);
+        int n = newOctree(context, "monkey.ply").getWithinBoundingBox(Octree.VER, itm, minCoord(ply.getVertices()), maxCoord(ply.getVertices()), 0);
         assertEquals(0, n);
     }
 
