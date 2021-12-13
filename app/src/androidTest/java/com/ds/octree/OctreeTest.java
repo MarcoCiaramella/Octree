@@ -26,17 +26,7 @@ public class OctreeTest {
 
     @Test
     public void constructor_isCorrect() {
-        double[][] vertices = {{2,-3,5.2}, {3.4,6,8.2}, {5,1,3}, {3,4,1}};
-        int[][] triangles = {{1,2,3}, {2,3,4}};
-        long index = new Octree(4, vertices[0], vertices[1],
-                0, null, null,
-                2, triangles[0], triangles[1],
-                0, null, null,
-                0, null, null,
-                0, null, null,
-                0, null, null,
-                0, null, null,
-                0, 1).getIndex();
+        long index = newOctree().getIndex();
         assertNotEquals(0, index);
     }
 
@@ -62,9 +52,23 @@ public class OctreeTest {
         return arrOfArr;
     }
 
-    private Octree newOctreeFromFile(){
+    private Octree newOctree(){
+        double[][] vertices = {{2,-3,5.2}, {3.4,6,8.2}, {5,1,3}, {3,4,1}};
+        int[][] triangles = {{1,2,3}, {2,3,4}};
+        return new Octree(4, vertices[0], vertices[1],
+                0, null, null,
+                2, triangles[0], triangles[1],
+                0, null, null,
+                0, null, null,
+                0, null, null,
+                0, null, null,
+                0, null, null,
+                0, 1);
+    }
+
+    private Octree newOctree(String filename){
         Context appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
-        Ply ply = new Ply(appContext, "monkey.ply");
+        Ply ply = new Ply(appContext, filename);
         ply.load();
         double[][] vertices = toArrOfArr(ply.getVertices(), 3);
         int[][] triangles = toArrOfArr(ply.getIndices(), 3);
@@ -81,7 +85,7 @@ public class OctreeTest {
 
     @Test
     public void constructorFromFile_isCorrect() {
-        long index = newOctreeFromFile().getIndex();
+        long index = newOctree("monkey.ply").getIndex();
         assertNotEquals(0, index);
     }
 
@@ -111,7 +115,7 @@ public class OctreeTest {
         Context appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
         Ply ply = new Ply(appContext, "cube_inters.ply");
         ply.load();
-        int n = newOctreeFromFile().getWithinBoundingBox(Octree.TRI, itm, minCoord(ply.getVertices()), maxCoord(ply.getVertices()), 0);
+        int n = newOctree("monkey.ply").getWithinBoundingBox(Octree.TRI, itm, minCoord(ply.getVertices()), maxCoord(ply.getVertices()), 0);
         assertTrue(n > 0);
     }
 
@@ -121,12 +125,12 @@ public class OctreeTest {
         Context appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
         Ply ply = new Ply(appContext, "cube_not_inters.ply");
         ply.load();
-        int n = newOctreeFromFile().getWithinBoundingBox(Octree.TRI, itm, minCoord(ply.getVertices()), maxCoord(ply.getVertices()), 0);
+        int n = newOctree("monkey.ply").getWithinBoundingBox(Octree.TRI, itm, minCoord(ply.getVertices()), maxCoord(ply.getVertices()), 0);
         assertEquals(0, n);
     }
 
     @Test
     public void free_isCorrect() {
-        newOctreeFromFile().free();
+        newOctree("monkey.ply").free();
     }
 }
