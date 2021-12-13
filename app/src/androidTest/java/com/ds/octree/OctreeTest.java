@@ -1,6 +1,8 @@
 package com.ds.octree;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertTrue;
 
 
 import android.content.Context;
@@ -21,8 +23,6 @@ import org.junit.runner.RunWith;
  */
 @RunWith(AndroidJUnit4.class)
 public class OctreeTest {
-
-    private Octree octree;
 
     @Test
     public void constructor_isCorrect() {
@@ -62,14 +62,13 @@ public class OctreeTest {
         return arrOfArr;
     }
 
-    @Test
-    public void constructorFromFile_isCorrect() {
+    private Octree newOctreeFromFile(){
         Context appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
         Ply ply = new Ply(appContext, "monkey.ply");
         ply.load();
         double[][] vertices = toArrOfArr(ply.getVertices(), 3);
         int[][] triangles = toArrOfArr(ply.getIndices(), 3);
-        octree = new Octree(vertices.length, vertices[0], vertices[1],
+        return new Octree(vertices.length, vertices[0], vertices[1],
                 0, null, null,
                 2, triangles[0], triangles[1],
                 0, null, null,
@@ -78,17 +77,56 @@ public class OctreeTest {
                 0, null, null,
                 0, null, null,
                 0, 1);
-        long index = octree.getIndex();
+    }
+
+    @Test
+    public void constructorFromFile_isCorrect() {
+        long index = newOctreeFromFile().getIndex();
         assertNotEquals(0, index);
+    }
+
+    private double[] minCoord(float[] vertices){
+        double[] min = new double[3];
+        for (int i = 0; i < vertices.length; i += 3) {
+            min[0] = Math.min(vertices[i], min[0]);
+            min[1] = Math.min(vertices[i+1], min[1]);
+            min[2] = Math.min(vertices[i+2], min[2]);
+        }
+        return min;
+    }
+
+    private double[] maxCoord(float[] vertices){
+        double[] max = new double[3];
+        for (int i = 0; i < vertices.length; i += 3) {
+            max[0] = Math.max(vertices[i], max[0]);
+            max[1] = Math.max(vertices[i+1], max[1]);
+            max[2] = Math.max(vertices[i+2], max[2]);
+        }
+        return max;
+    }
+
+    @Test
+    public void getWithinBoundingBox1_isCorrect() {
+        int[] itm = new int[10];
+        Context appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
+        Ply ply = new Ply(appContext, "cube_inters.ply");
+        ply.load();
+        int n = newOctreeFromFile().getWithinBoundingBox(Octree.TRI, itm, minCoord(ply.getVertices()), maxCoord(ply.getVertices()), 0);
+        assertTrue(n > 0);
+    }
+
+    @Test
+    public void getWithinBoundingBox2_isCorrect() {
+        int[] itm = new int[10];
+        Context appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
+        Ply ply = new Ply(appContext, "cube_not_inters.ply");
+        ply.load();
+        int n = newOctreeFromFile().getWithinBoundingBox(Octree.TRI, itm, minCoord(ply.getVertices()), maxCoord(ply.getVertices()), 0);
+        assertEquals(0, n);
     }
 
     @Test
     public void free_isCorrect() {
-        octree.free();
-    }
-
-    @Test
-    public void getWithinBoundingBox_isCorrect() {
-        octree.getWithinBoundingBox();
+        newOctreeFromFile().free();
     }
 }
