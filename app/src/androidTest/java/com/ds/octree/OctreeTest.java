@@ -66,9 +66,8 @@ public class OctreeTest {
                 0, 1);
     }
 
-    private Octree newOctree(String filename){
-        Context appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
-        Ply ply = new Ply(appContext, filename);
+    private Octree newOctree(Context context, String filename){
+        Ply ply = new Ply(context, filename);
         ply.load();
         double[][] vertices = toArrOfArr(ply.getVertices(), 3);
         int[][] triangles = toArrOfArr(ply.getIndices(), 3);
@@ -85,7 +84,8 @@ public class OctreeTest {
 
     @Test
     public void constructorFromFile_isCorrect() {
-        long index = newOctree("monkey.ply").getIndex();
+        Context context = InstrumentationRegistry.getInstrumentation().getTargetContext();
+        long index = newOctree(context, "monkey.ply").getIndex();
         assertNotEquals(0, index);
     }
 
@@ -112,25 +112,26 @@ public class OctreeTest {
     @Test
     public void getWithinBoundingBox1_isCorrect() {
         int[] itm = new int[10];
-        Context appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
-        Ply ply = new Ply(appContext, "cube_inters.ply");
+        Context context = InstrumentationRegistry.getInstrumentation().getTargetContext();
+        Ply ply = new Ply(context, "cube_inters.ply");
         ply.load();
-        int n = newOctree("monkey.ply").getWithinBoundingBox(Octree.TRI, itm, minCoord(ply.getVertices()), maxCoord(ply.getVertices()), 0);
-        assertTrue(n > 0);
+        int n = newOctree(context, "monkey.ply").getWithinBoundingBox(Octree.TRI, itm, minCoord(ply.getVertices()), maxCoord(ply.getVertices()), 0);
+        assertTrue("n = "+n, n > 0);
     }
 
     @Test
     public void getWithinBoundingBox2_isCorrect() {
         int[] itm = new int[10];
-        Context appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
-        Ply ply = new Ply(appContext, "cube_not_inters.ply");
+        Context context = InstrumentationRegistry.getInstrumentation().getTargetContext();
+        Ply ply = new Ply(context, "cube_not_inters.ply");
         ply.load();
-        int n = newOctree("monkey.ply").getWithinBoundingBox(Octree.TRI, itm, minCoord(ply.getVertices()), maxCoord(ply.getVertices()), 0);
+        int n = newOctree(context, "monkey.ply").getWithinBoundingBox(Octree.TRI, itm, minCoord(ply.getVertices()), maxCoord(ply.getVertices()), 0);
         assertEquals(0, n);
     }
 
     @Test
     public void free_isCorrect() {
-        newOctree("monkey.ply").free();
+        Context context = InstrumentationRegistry.getInstrumentation().getTargetContext();
+        newOctree(context, "monkey.ply").free();
     }
 }
