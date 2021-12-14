@@ -24,6 +24,10 @@ import org.junit.runner.RunWith;
 @RunWith(AndroidJUnit4.class)
 public class OctreeTest {
 
+    private Context getContext(){
+        return InstrumentationRegistry.getInstrumentation().getTargetContext();
+    }
+
     @Test
     public void constructor_isCorrect() {
         long index = newOctree().getIndex();
@@ -40,8 +44,8 @@ public class OctreeTest {
                 0, 1);
     }
 
-    private Octree newOctree(Context context, String filename){
-        Ply ply = new Ply(context, filename);
+    private Octree newOctree(String filename){
+        Ply ply = new Ply(getContext(), filename);
         ply.load();
         double[] vertices = new double[ply.getVertices().length];
         for (int i = 0; i < vertices.length; i++){
@@ -56,8 +60,7 @@ public class OctreeTest {
 
     @Test
     public void constructorFromFile_isCorrect() {
-        Context context = InstrumentationRegistry.getInstrumentation().getTargetContext();
-        long index = newOctree(context, "monkey.ply").getIndex();
+        long index = newOctree("monkey.ply").getIndex();
         assertNotEquals(0, index);
     }
 
@@ -90,26 +93,37 @@ public class OctreeTest {
     @Test
     public void getWithinBoundingBox1_isCorrect() {
         int[] itm = new int[10];
-        Context context = InstrumentationRegistry.getInstrumentation().getTargetContext();
-        Ply ply = new Ply(context, "cube_inters.ply");
+        Ply ply = new Ply(getContext(), "cube_inters.ply");
         ply.load();
-        int n = newOctree(context, "monkey.ply").getWithinBoundingBox(Octree.VER, itm, minCoord(ply.getVertices()), maxCoord(ply.getVertices()), 0);
+        int n = newOctree("monkey.ply").getWithinBoundingBox(Octree.VER, itm, minCoord(ply.getVertices()), maxCoord(ply.getVertices()), 0);
         assertTrue("n = "+n, n > 0);
     }
 
     @Test
     public void getWithinBoundingBox2_isCorrect() {
         int[] itm = new int[10];
-        Context context = InstrumentationRegistry.getInstrumentation().getTargetContext();
-        Ply ply = new Ply(context, "cube_not_inters.ply");
+        Ply ply = new Ply(getContext(), "cube_not_inters.ply");
         ply.load();
-        int n = newOctree(context, "monkey.ply").getWithinBoundingBox(Octree.VER, itm, minCoord(ply.getVertices()), maxCoord(ply.getVertices()), 0);
+        int n = newOctree("monkey.ply").getWithinBoundingBox(Octree.VER, itm, minCoord(ply.getVertices()), maxCoord(ply.getVertices()), 0);
         assertEquals(0, n);
     }
 
     @Test
     public void free_isCorrect() {
-        Context context = InstrumentationRegistry.getInstrumentation().getTargetContext();
-        newOctree(context, "monkey.ply").free();
+        newOctree("monkey.ply").free();
+    }
+
+    @Test
+    public void getNearest_isCorrect() {
+        double[] projection = new double[3];
+        int index = newOctree("monkey.ply").getNearest(Octree.TRI, new double[]{0,0,0}, projection, 0, 0);
+        assertTrue("index = "+index, index != 0);
+    }
+
+    @Test
+    public void getIntersectedSurface_isCorrect() {
+        double[] intersection = new double[3];
+        int index = newOctree("monkey.ply").getIntersectedSurface(new double[]{0,0,0}, new double[]{0,1,0}, intersection, 0, 0);
+        assertTrue("index = "+index, index != 0);
     }
 }

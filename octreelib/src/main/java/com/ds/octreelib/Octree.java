@@ -94,16 +94,15 @@ public class Octree {
 
     /**
      * This procedure enables some kind of ray-tracing intersection tests. A ray is made of
-     * a source vertex and a directional vector and the procedure returns the first mesh entity
-     * intersected by this ray. You may restrict the test to a single kind of mesh entity or check
-     * against every kind of entity.
+     * a source vertex and a directional vector and the procedure returns the first triangle
+     * intersected by this ray.
      *
      * @param verCrd coordinates of the ray source vertex
      * @param verTng directional unit vector
      * @param minDis a set of coordinates that will be filled with the closest intersection
      * @param maxDis give a size to restrict the search distance or 0 for unbounded search
      * @param thrIdx thread or calling process number or 0 in serial case
-     * @return the index of the first intersected entity or 0 if none were found
+     * @return the index of the first intersected triangle or 0 if none were found
      */
     public int getIntersectedSurface(double[] verCrd, double[] verTng, double[] minDis, double maxDis, int thrIdx){
         return getIntersectedSurface(index, verCrd, verTng, minDis, maxDis, thrIdx);
