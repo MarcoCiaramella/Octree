@@ -19,5 +19,5 @@ dependencies {
 	}
 ```
 ## How to use
-All methods in the class Octree is documented by a Java doc. The documentation is taken from the `libOL`
+All methods in the class Octree are documented by a Java doc. The documentation is taken from the `libOL`
 repository.
