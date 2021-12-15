@@ -126,4 +126,17 @@ public class OctreeTest {
         int index = newOctree("monkey.ply").getIntersectedSurface(new double[]{0,0,0}, new double[]{0,1,0}, intersection, 0, 0);
         assertTrue("index = "+index, index != 0);
     }
+
+    @Test
+    public void isInside_isCorrect() {
+        int numIntersections = newOctree("monkey.ply").isInside(new double[]{0,0,0}, new double[]{0,1,0}, 0);
+        assertEquals(1, numIntersections);
+    }
+
+    @Test
+    public void projectVertex_isCorrect() {
+        double[] crd = new double[3];
+        int result = newOctree("monkey.ply").projectVertex(new double[]{0,0,0}, Octree.TRI, 5, crd, 0);
+        assertTrue("result = "+result, result != 0);
+    }
 }

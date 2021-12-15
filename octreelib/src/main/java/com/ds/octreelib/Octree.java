@@ -16,7 +16,7 @@ public class Octree {
     /**
      * Builds an octree from a mesh made of vertices (mandatory) and optionally
      * some elements of various kinds like and dimensions:
-     * edges, triangles, quadrilaterals and tetrahedra are handled.
+     * edges, triangles and quadrilaterals are handled.
      *
      * @param nmbVer number of vertices to insert in the octree
      * @param ver coordinates of vertices
@@ -63,7 +63,7 @@ public class Octree {
      * is stored in a user-provided table whose size must be given and will limit the number of
      * returned included elements.
      *
-     * @param typ kind of mesh entity to look for: VER, EDG, TRI, QAD or TET
+     * @param typ kind of mesh entity to look for: VER, EDG, TRI or QAD
      * @param itmTab a user-provided table that will be filled with the intersected elements
      * @param minCrd coordinates of the lower bounding box corner
      * @param maxCrd coordinates of the upper bounding box corner
@@ -81,7 +81,7 @@ public class Octree {
      * source point. This procedure can safely be called in parallel as long as the concurrent
      * caller’s ID are unique.
      *
-     * @param typ kind of entity to look for : VER, EDG, TRI, QAD or TET
+     * @param typ kind of entity to look for: VER, EDG, TRI or QAD
      * @param verCrd coordinates of the source point
      * @param minDis a set of coordinates that will be filled with the closest projection
      * @param maxDis allows restricting the search to a maximum distance, set it to 0 for unbounded search
@@ -132,7 +132,7 @@ public class Octree {
      * by the single precision floating point smallest value (i.e. 10E-7).
      *
      * @param verCrd coordinates of the vertex to project
-     * @param typ kind of mesh entity to project on: VER, EDG, TRI, QAD or TET
+     * @param typ kind of mesh entity to project on: VER, EDG, TRI or QAD
      * @param idx index of the mesh entity
      * @param crd coordinates that will receive the projection
      * @param thrIdx thread or calling process number or 0 in serial case
