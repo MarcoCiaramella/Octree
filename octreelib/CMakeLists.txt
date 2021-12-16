@@ -7,4 +7,9 @@ add_library(
         src/main/cpp/octree.c
 )
 
+target_link_libraries(
+        Octree
+        log
+)
+
 include_directories(src/main/cpp/)
