@@ -3616,12 +3616,20 @@ itg UsrPrcCallback(void* a, itg b){
     return 0;
 }
 
-double* toDoubleArray(JNIEnv* env, jdoubleArray arr){
+double* getDoubleArray(JNIEnv* env, jdoubleArray arr){
     return arr ? (*env)->GetDoubleArrayElements(env, arr, 0) : NULL;
 }
 
-int* toIntArray(JNIEnv* env, jintArray arr){
+int* getIntArray(JNIEnv* env, jintArray arr){
     return arr ? (*env)->GetIntArrayElements(env, arr, 0) : NULL;
+}
+
+void setDoubleArray(JNIEnv* env, jdoubleArray arr, double* data){
+    (*env)->SetDoubleArrayRegion(env, arr, 0, (*env)->GetArrayLength(env, arr), data);
+}
+
+void setIntArray(JNIEnv* env, jintArray arr, int* data){
+    (*env)->SetIntArrayRegion(env, arr, 0, (*env)->GetArrayLength(env, arr), data);
 }
 
 JNIEXPORT jlong JNICALL
@@ -3634,10 +3642,10 @@ Java_com_ds_octreelib_Octree_newOctree(
         jint BasIdx, jint NmbThr
         ){
 
-    jdouble* vert = toDoubleArray(env, PtrCrd);
-    jint* edg = toIntArray(env, PtrEdg);
-    jint* tri = toIntArray(env, PtrTri);
-    jint* qad = toIntArray(env, PtrQad);
+    jdouble* vert = getDoubleArray(env, PtrCrd);
+    jint* edg = getIntArray(env, PtrEdg);
+    jint* tri = getIntArray(env, PtrTri);
+    jint* qad = getIntArray(env, PtrQad);
 
     return LolNewOctree(NmbVer, vert, vert+3,
     NmbEdg, edg, edg+2,
@@ -3664,7 +3672,12 @@ Java_com_ds_octreelib_Octree_getWithinBoundingBox(
         jlong OctIdx, jint typ, jint MaxItm, jintArray ItmTab,
         jdoubleArray MinCrd, jdoubleArray MaxCrd, jint ThrIdx
         ){
-    return LolGetBoundingBox(OctIdx, typ, MaxItm, toIntArray(env, ItmTab), toDoubleArray(env, MinCrd), toDoubleArray(env, MaxCrd), ThrIdx);
+    int* ItmTabIA = getIntArray(env, ItmTab);
+    itg res = LolGetBoundingBox(OctIdx, typ, MaxItm, ItmTabIA,
+                             getDoubleArray(env, MinCrd),
+                             getDoubleArray(env, MaxCrd), ThrIdx);
+    setIntArray(env, ItmTab, ItmTabIA);
+    return res;
 }
 
 /*
@@ -3694,7 +3707,10 @@ Java_com_ds_octreelib_Octree_getNearest(
         jlong OctIdx, jint typ, jdoubleArray VerCrd, jdoubleArray MinDis, jdouble MaxDis,
         jint ThrIdx
 ){
-    return LolGetNearest(OctIdx, typ, toDoubleArray(env, VerCrd), toDoubleArray(env, MinDis), MaxDis, NULL, NULL, ThrIdx);
+    double* MinDisDA = getDoubleArray(env, MinDis);
+    itg res = LolGetNearest(OctIdx, typ, getDoubleArray(env, VerCrd), MinDisDA, MaxDis, NULL, NULL, ThrIdx);
+    setDoubleArray(env, MinDis, MinDisDA);
+    return res;
 }
 
 JNIEXPORT jint JNICALL
@@ -3703,7 +3719,11 @@ Java_com_ds_octreelib_Octree_getIntersectedSurface(
         jlong OctIdx, jdoubleArray VerCrd, jdoubleArray VerTng, jdoubleArray MinDis,
         jdouble MaxDis, jint ThrIdx
 ){
-    return LolIntersectSurface(OctIdx, toDoubleArray(env, VerCrd), toDoubleArray(env, VerTng), toDoubleArray(env, MinDis), MaxDis, NULL, NULL, ThrIdx);
+    double* MinDisDA = getDoubleArray(env, MinDis);
+    itg res = LolIntersectSurface(OctIdx, getDoubleArray(env, VerCrd), getDoubleArray(env, VerTng),
+                               MinDisDA, MaxDis, NULL, NULL, ThrIdx);
+    setDoubleArray(env, MinDis, MinDisDA);
+    return res;
 }
 
 JNIEXPORT jint JNICALL
@@ -3711,7 +3731,7 @@ Java_com_ds_octreelib_Octree_isInside(
         JNIEnv* env, jobject this,
         jlong OctIdx, jdoubleArray VerCrd, jdoubleArray VerTng, jint ThrIdx
         ){
-    return LolIsInside(OctIdx, toDoubleArray(env, VerCrd), toDoubleArray(env, VerTng), ThrIdx);
+    return LolIsInside(OctIdx, getDoubleArray(env, VerCrd), getDoubleArray(env, VerTng), ThrIdx);
 }
 
 JNIEXPORT jint JNICALL
@@ -3720,5 +3740,8 @@ Java_com_ds_octreelib_Octree_projectVertex(
         jlong OctIdx, jdoubleArray VerCrd, jint typ,
         jint idx, jdoubleArray crd, jint ThrIdx
         ){
-    return LolProjectVertex(OctIdx, toDoubleArray(env, VerCrd), typ, idx, toDoubleArray(env, crd), ThrIdx);
+    double* crdDA = getDoubleArray(env, crd);
+    itg res = LolProjectVertex(OctIdx, getDoubleArray(env, VerCrd), typ, idx, crdDA, ThrIdx);
+    setDoubleArray(env, crd, crdDA);
+    return res;
 }
