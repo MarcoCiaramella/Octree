@@ -104,7 +104,7 @@ public class Octree {
      * @param thrIdx thread or calling process number or 0 in serial case
      * @return the index of the first intersected triangle or 0 if none were found
      */
-    public int getIntersectedSurface(double[] verCrd, double[] verTng, double[] minDis, double maxDis, int thrIdx){
+    private int getIntersectedSurface(double[] verCrd, double[] verTng, double[] minDis, double maxDis, int thrIdx){
         return getIntersectedSurface(index, verCrd, verTng, minDis, maxDis, thrIdx);
     }
 
@@ -117,7 +117,7 @@ public class Octree {
      * @param thrIdx thread or calling process number or 0 in serial case
      * @return the number vector-triangle intersections
      */
-    public int isInside(double[] verCrd, double[] verTng, int thrIdx){
+    private int isInside(double[] verCrd, double[] verTng, int thrIdx){
         return isInside(index, verCrd, verTng, thrIdx);
     }
 
