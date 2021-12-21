@@ -3635,22 +3635,22 @@ void setIntArray(JNIEnv* env, jintArray arr, int* data){
 JNIEXPORT jlong JNICALL
 Java_com_ds_octreelib_Octree_newOctree(
         JNIEnv* env, jobject this,
-        jint NmbVer, jdoubleArray PtrCrd,
-        jint NmbEdg, jintArray PtrEdg,
-        jint NmbTri, jintArray PtrTri,
-        jint NmbQad, jintArray PtrQad,
+        jint NmbVer, jdoubleArray PtrVer, jint SizeVer,
+        jint NmbEdg, jintArray PtrEdg, jint SizeEdg,
+        jint NmbTri, jintArray PtrTri, jint SizeTri,
+        jint NmbQad, jintArray PtrQad, jint SizeQad,
         jint BasIdx, jint NmbThr
         ){
 
-    jdouble* vert = getDoubleArray(env, PtrCrd);
+    jdouble* ver = getDoubleArray(env, PtrVer);
     jint* edg = getIntArray(env, PtrEdg);
     jint* tri = getIntArray(env, PtrTri);
     jint* qad = getIntArray(env, PtrQad);
 
-    return LolNewOctree(NmbVer, vert, vert+3,
-    NmbEdg, edg, edg+2,
-    NmbTri, tri, tri+3,
-    NmbQad, qad, qad+4,
+    return LolNewOctree(NmbVer, ver, ver+SizeVer,
+    NmbEdg, edg, edg+SizeEdg,
+    NmbTri, tri, tri+SizeTri,
+    NmbQad, qad, qad+SizeQad,
     0, NULL, NULL,
     0, NULL, NULL,
     0, NULL, NULL,

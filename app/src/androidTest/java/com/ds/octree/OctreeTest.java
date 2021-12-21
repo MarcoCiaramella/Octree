@@ -31,10 +31,10 @@ public class OctreeTest {
     private Octree newOctree(){
         double[] vertices = {2,-3,5.2,3.4,6,8.2,5,1,3,3,4,1};
         int[] triangles = {1,2,3,2,3,4};
-        return new Octree(vertices.length/3, vertices,
-                0, null,
-                triangles.length/3, triangles,
-                0, null,
+        return new Octree(vertices.length/3, vertices, 3,
+                0, null, 0,
+                triangles.length/3, triangles, 3,
+                0, null, 0,
                 0, 1);
     }
 
@@ -45,10 +45,10 @@ public class OctreeTest {
         for (int i = 0; i < vertices.length; i++){
             vertices[i] = ply.getVertices()[i];
         }
-        return new Octree(vertices.length/3, vertices,
-                0, null,
-                ply.getIndices().length/3, ply.getIndices(),
-                0, null,
+        return new Octree(vertices.length/3, vertices, 3,
+                0, null, 0,
+                ply.getIndices().length/3, ply.getIndices(), 3,
+                0, null, 0,
                 0, 1);
     }
 

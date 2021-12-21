@@ -20,25 +20,29 @@ public class Octree {
      *
      * @param nmbVer number of vertices to insert in the octree
      * @param ver coordinates of vertices
+     * @param sizeVer number of coordinates in each vertex
      * @param nmbEdg number of edges to insert in the octree
      * @param edg indices of edges
+     * @param sizeEdg number of vertices in each edge
      * @param nmbTri number of triangles to insert in the octree
      * @param tri indices of triangles
+     * @param sizeTri number of vertices in each triangle
      * @param nmbQad number of quadrilaterals to insert in the octree
      * @param qad indices of quadrilaterals
+     * @param sizeQad number of vertices in each quadrilateral
      * @param basIdx starting index of the user’s tables: 0 or 1
      * @param nmbThr maximum number of threads or process that can perform requests concurrently: must be 1 or more
      */
-    public Octree(int nmbVer, double[] ver,
-                  int nmbEdg, int[] edg,
-                  int nmbTri, int[] tri,
-                  int nmbQad, int[] qad,
+    public Octree(int nmbVer, double[] ver, int sizeVer,
+                  int nmbEdg, int[] edg, int sizeEdg,
+                  int nmbTri, int[] tri, int sizeTri,
+                  int nmbQad, int[] qad, int sizeQad,
                   int basIdx, int nmbThr){
-        index = newOctree(nmbVer, ver,
-                nmbEdg, edg,
-                nmbTri, tri,
-                nmbQad, qad,
-                basIdx, nmbThr);
+        index = newOctree(nmbVer, ver, sizeVer,
+        nmbEdg, edg, sizeEdg,
+        nmbTri, tri, sizeTri,
+        nmbQad, qad, sizeQad,
+        basIdx, nmbThr);
     }
 
     /**
@@ -143,10 +147,10 @@ public class Octree {
         return projectVertex(index, verCrd, typ, idx, crd, thrIdx);
     }
 
-    private native long newOctree(int nmbVer, double[] ver,
-                                  int nmbEdg, int[] edg,
-                                  int nmbTri, int[] tri,
-                                  int nmbQad, int[] qad,
+    private native long newOctree(int nmbVer, double[] ver, int sizeVer,
+                                  int nmbEdg, int[] edg, int sizeEdg,
+                                  int nmbTri, int[] tri, int sizeTri,
+                                  int nmbQad, int[] qad, int sizeQad,
                                   int basIdx, int nmbThr);
     private native int freeOctree(long octIdx);
     private native int getWithinBoundingBox(long octIdx, int typ, int maxItm, int[] itmTab,
