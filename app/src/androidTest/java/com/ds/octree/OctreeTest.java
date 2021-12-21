@@ -28,18 +28,12 @@ public class OctreeTest {
         return InstrumentationRegistry.getInstrumentation().getTargetContext();
     }
 
-    @Test
-    public void constructor_isCorrect() {
-        long index = newOctree().getIndex();
-        assertNotEquals(0, index);
-    }
-
     private Octree newOctree(){
         double[] vertices = {2,-3,5.2,3.4,6,8.2,5,1,3,3,4,1};
         int[] triangles = {1,2,3,2,3,4};
-        return new Octree(4, vertices,
+        return new Octree(vertices.length/3, vertices,
                 0, null,
-                2, triangles,
+                triangles.length/3, triangles,
                 0, null,
                 0, 1);
     }
@@ -53,15 +47,9 @@ public class OctreeTest {
         }
         return new Octree(vertices.length/3, vertices,
                 0, null,
-                2, ply.getIndices(),
+                ply.getIndices().length/3, ply.getIndices(),
                 0, null,
                 0, 1);
-    }
-
-    @Test
-    public void constructorFromFile_isCorrect() {
-        long index = newOctree("monkey.ply").getIndex();
-        assertNotEquals(0, index);
     }
 
     private double[] minCoord(float[] vertices){
@@ -91,20 +79,39 @@ public class OctreeTest {
     }
 
     @Test
-    public void getWithinBoundingBox1_isCorrect() {
-        int[] itm = new int[10];
-        Ply ply = new Ply(getContext(), "cube_inters.ply");
-        ply.load();
-        int n = newOctree("monkey.ply").getWithinBoundingBox(Octree.VER, itm, minCoord(ply.getVertices()), maxCoord(ply.getVertices()), 0);
-        assertTrue("n = "+n, n > 0);
+    public void constructor_isCorrect() {
+        assertNotEquals(0, newOctree().getIndex());
     }
 
     @Test
-    public void getWithinBoundingBox2_isCorrect() {
+    public void constructorFromFile_isCorrect() {
+        assertNotEquals(0, newOctree("monkey.ply").getIndex());
+    }
+
+    @Test
+    public void getWithinBoundingBox_isCorrect() {
         int[] itm = new int[10];
-        Ply ply = new Ply(getContext(), "cube_not_inters.ply");
-        ply.load();
-        int n = newOctree("monkey.ply").getWithinBoundingBox(Octree.VER, itm, minCoord(ply.getVertices()), maxCoord(ply.getVertices()), 0);
+        Ply cubeInters = new Ply(getContext(), "cube_inters.ply");
+        cubeInters.load();
+        Ply cubeNotInters = new Ply(getContext(), "cube_not_inters.ply");
+        cubeNotInters.load();
+        int n;
+        Octree octree = newOctree("monkey.ply");
+
+
+
+        n = octree.getWithinBoundingBox(Octree.VER, itm, minCoord(cubeInters.getVertices()), maxCoord(cubeInters.getVertices()), 0);
+        assertTrue("n = "+n, n > 0);
+
+        n = octree.getWithinBoundingBox(Octree.TRI, itm, minCoord(cubeInters.getVertices()), maxCoord(cubeInters.getVertices()), 0);
+        assertTrue("n = "+n, n > 0);
+
+
+
+        n = octree.getWithinBoundingBox(Octree.VER, itm, minCoord(cubeNotInters.getVertices()), maxCoord(cubeNotInters.getVertices()), 0);
+        assertEquals(0, n);
+
+        n = octree.getWithinBoundingBox(Octree.TRI, itm, minCoord(cubeNotInters.getVertices()), maxCoord(cubeNotInters.getVertices()), 0);
         assertEquals(0, n);
     }
 
@@ -116,14 +123,45 @@ public class OctreeTest {
     @Test
     public void getNearest_isCorrect() {
         double[] projection = new double[3];
-        int index = newOctree("monkey.ply").getNearest(Octree.TRI, new double[]{0,0,0}, projection, 0, 0);
+        Octree octree = newOctree("monkey.ply");
+        int index;
+
+        index = octree.getNearest(Octree.VER, new double[]{0,0,0}, projection, 0, 0);
+        assertTrue("index = "+index, index != 0);
+
+        index = octree.getNearest(Octree.TRI, new double[]{0,0,0}, projection, 0, 0);
         assertTrue("index = "+index, index != 0);
     }
 
     @Test
     public void projectVertex_isCorrect() {
         double[] crd = new double[3];
-        int result = newOctree("monkey.ply").projectVertex(new double[]{0,0,0}, Octree.TRI, 5, crd, 0);
-        assertTrue("result = "+result, result != 0);
+        Octree octree = newOctree("monkey.ply");
+        int result;
+
+        result = octree.projectVertex(new double[]{0,0,0}, Octree.VER, 5, crd, 0);
+        assertEquals("result = " + result, 1, result);
+
+        result = octree.projectVertex(new double[]{0,0,0}, Octree.TRI, 5, crd, 0);
+        assertTrue("result = "+result, result == 3 || result == 1);
+    }
+
+    @Test
+    public void isInside_isCorrect(){
+        Octree octree = newOctree("monkey.ply");
+        int intersections;
+
+        intersections = octree.isInside(new double[]{0,0,0}, new double[]{0,1,0}, 0);
+        assertTrue("intersections = "+intersections, intersections > 0);
+
+        intersections = octree.isInside(new double[]{1000,0,0}, new double[]{0,1,0}, 0);
+        assertEquals("intersections = " + intersections, 0, intersections);
+    }
+
+    @Test
+    public void getIntersectedSurface_isCorrect(){
+        double[] intersection = new double[3];
+        int index = newOctree("monkey.ply").getIntersectedSurface(new double[]{0,0,0}, new double[]{0,1,0}, intersection, 0, 0);
+        assertNotEquals(0, index);
     }
 }
