@@ -942,6 +942,11 @@ static void GetBox(  OtrSct *otr, OctSct *oct, itg typ, itg *NmbItm,
             }
             else if(lnk->typ == LolTypTri)
             {
+
+#ifdef DEBUG
+                DEBUG("GetBox()");
+#endif
+
                 SetItm(otr->msh, LolTypTri, lnk->idx, TngFlg, ThrIdx);
 
 #ifdef DEBUG
@@ -1731,6 +1736,9 @@ static void SetItm(MshSct *msh, itg typ, itg idx, itg flg, itg ThrIdx)
     }
     else if(typ == LolTypTri)
     {
+#ifdef DEBUG
+        DEBUG("SetItm()");
+#endif
         // Setup the temporary triangle structure with this triangle's ID
         ThrMsh->tri.idx = idx;
 
@@ -1738,27 +1746,60 @@ static void SetItm(MshSct *msh, itg typ, itg idx, itg flg, itg ThrIdx)
         {
             CrdTab = (fpn *)GetPtrItm(msh, typ, idx);
 
+#ifdef DEBUG
+            DEBUG("SetItm()");
+#endif
+
             for(i=0;i<3;i++)
                 CpyVec(&CrdTab[ i * 3 ], ThrMsh->tri.ver[i]->crd);
+
+#ifdef DEBUG
+            DEBUG("SetItm()");
+#endif
         }
         else
         {
+#ifdef DEBUG
+            DEBUG("SetItm()");
+#endif
             IdxTab = (itg *)GetPtrItm(msh, typ, idx);
+#ifdef DEBUG
+            DEBUG("SetItm()");
+#endif
 
             for(i=0;i<3;i++)
                 CpyVec((fpn *)GetPtrItm(msh, LolTypVer, IdxTab[i]), ThrMsh->tri.ver[i]->crd);
+#ifdef DEBUG
+            DEBUG("SetItm()");
+#endif
         }
 
+#ifdef DEBUG
+        DEBUG("SetItm()");
+#endif
+
         SetTriNrm(&ThrMsh->tri);
+
+#ifdef DEBUG
+        DEBUG("SetItm()");
+#endif
 
         // Set triangle edge tangents only on request
         if(flg & TngFlg)
             for(i=0;i<3;i++)
                 SetEdgTng(&ThrMsh->tri.edg[i]);
 
+#ifdef DEBUG
+        DEBUG("SetItm()");
+#endif
+
         // Compute the aspect ratio on demand
         if(flg & AniFlg)
             ThrMsh->tri.ani = (float)GetTriAni(&ThrMsh->tri);
+
+#ifdef DEBUG
+        DEBUG("SetItm()");
+#endif
     }
     else if(typ == LolTypQad)
     {
