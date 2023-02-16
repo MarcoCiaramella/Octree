@@ -713,16 +713,8 @@ itg LolGetBoundingBox(  int64_t OctIdx, itg typ, itg MaxItm, itg *ItmTab,
              otr->msh->thr[ ThrIdx ]->FlgTab, box, otr->eps,
              otr->bnd[0], otr->bnd[1], ThrIdx );
 
-#ifdef DEBUG
-    DEBUG("LolGetBoundingBox()");
-#endif
-
     for(i=0;i<NmbItm;i++)
         otr->msh->thr[ ThrIdx ]->FlgTab[ ItmTab[i] ] = 0;
-
-#ifdef DEBUG
-    DEBUG("LolGetBoundingBox()");
-#endif
 
     return(NmbItm);
 }
@@ -892,16 +884,9 @@ static void GetBox(  OtrSct *otr, OctSct *oct, itg typ, itg *NmbItm,
     {
         // Recursively intersect the box with the octree
         for(i=0;i<8;i++)
-            if(BoxIntBox(box, son[i], eps)) {
-#ifdef DEBUG
-                DEBUG("GetBox()");
-#endif
+            if(BoxIntBox(box, son[i], eps))
                 GetBox(otr, oct->son + i, typ, NmbItm, MaxItm, ItmTab,
                        FlgTab, box, eps, son[i][0], son[i][1], ThrIdx);
-#ifdef DEBUG
-                DEBUG("GetBox()");
-#endif
-            }
     }
     else if((lnk = oct->lnk) && (*NmbItm < MaxItm) )
     {
@@ -914,17 +899,9 @@ static void GetBox(  OtrSct *otr, OctSct *oct, itg typ, itg *NmbItm,
             if(lnk->typ != typ)
                 continue;
 
-#ifdef DEBUG
-            DEBUG("GetBox()");
-#endif
-
             if(lnk->typ == LolTypVer)
             {
                 SetItm(otr->msh, LolTypVer, lnk->idx, 0, ThrIdx);
-
-#ifdef DEBUG
-                DEBUG("GetBox()");
-#endif
 
                 if(!VerInsHex(&ThrMsh->ver[0], &ThrOct->hex))
                     continue;
@@ -932,10 +909,6 @@ static void GetBox(  OtrSct *otr, OctSct *oct, itg typ, itg *NmbItm,
             else if(lnk->typ == LolTypEdg)
             {
                 SetItm(otr->msh, LolTypEdg, lnk->idx, 0, ThrIdx);
-
-#ifdef DEBUG
-                DEBUG("GetBox()");
-#endif
 
                 if(!EdgIntHex(&ThrMsh->edg, &ThrOct->hex, otr->eps))
                     continue;
@@ -960,10 +933,6 @@ static void GetBox(  OtrSct *otr, OctSct *oct, itg typ, itg *NmbItm,
             {
                 SetItm(otr->msh, LolTypQad, lnk->idx, TngFlg, ThrIdx);
 
-#ifdef DEBUG
-                DEBUG("GetBox()");
-#endif
-
                 if(!QadIntHex(&ThrMsh->qad, &ThrOct->hex, otr->eps))
                     continue;
             }
@@ -971,29 +940,15 @@ static void GetBox(  OtrSct *otr, OctSct *oct, itg typ, itg *NmbItm,
             {
                 SetItm(otr->msh, LolTypTet, lnk->idx, TngFlg, ThrIdx);
 
-#ifdef DEBUG
-                DEBUG("GetBox()");
-#endif
-
                 if(!TetIntHex(&ThrMsh->tet, &ThrOct->hex, otr->eps))
                     continue;
             }
 
             if(!FlgTab[ lnk->idx ])
             {
-#ifdef DEBUG
-                DEBUG("GetBox()");
-#endif
                 ItmTab[ (*NmbItm)++ ] = lnk->idx;
                 FlgTab[ lnk->idx ] = 1;
-#ifdef DEBUG
-                DEBUG("GetBox()");
-#endif
             }
-
-#ifdef DEBUG
-            DEBUG("GetBox()");
-#endif
 
         }while( (lnk = lnk->nex) && (*NmbItm < MaxItm) );
     }
@@ -3763,23 +3718,11 @@ Java_com_ds_octreelib_Octree_getWithinBoundingBox(
         jlong OctIdx, jint typ, jint MaxItm, jintArray ItmTab,
         jdoubleArray MinCrd, jdoubleArray MaxCrd, jint ThrIdx
         ){
-#ifdef DEBUG
-    DEBUG("Java_com_ds_octreelib_Octree_getWithinBoundingBox()");
-#endif
     int* ItmTabIA = getIntArray(env, ItmTab);
-#ifdef DEBUG
-    DEBUG("Java_com_ds_octreelib_Octree_getWithinBoundingBox()");
-#endif
     itg res = LolGetBoundingBox(OctIdx, typ, MaxItm, ItmTabIA,
                              getDoubleArray(env, MinCrd),
                              getDoubleArray(env, MaxCrd), ThrIdx);
-#ifdef DEBUG
-    DEBUG("Java_com_ds_octreelib_Octree_getWithinBoundingBox()");
-#endif
     setIntArray(env, ItmTab, ItmTabIA);
-#ifdef DEBUG
-    DEBUG("Java_com_ds_octreelib_Octree_getWithinBoundingBox()");
-#endif
     return res;
 }
 
