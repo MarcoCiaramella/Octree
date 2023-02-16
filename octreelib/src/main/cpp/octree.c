@@ -892,9 +892,16 @@ static void GetBox(  OtrSct *otr, OctSct *oct, itg typ, itg *NmbItm,
     {
         // Recursively intersect the box with the octree
         for(i=0;i<8;i++)
-            if(BoxIntBox(box, son[i], eps))
-                GetBox(  otr, oct->son+i, typ, NmbItm, MaxItm, ItmTab,
-                         FlgTab, box, eps, son[i][0], son[i][1], ThrIdx );
+            if(BoxIntBox(box, son[i], eps)) {
+#ifdef DEBUG
+                DEBUG("GetBox()");
+#endif
+                GetBox(otr, oct->son + i, typ, NmbItm, MaxItm, ItmTab,
+                       FlgTab, box, eps, son[i][0], son[i][1], ThrIdx);
+#ifdef DEBUG
+                DEBUG("GetBox()");
+#endif
+            }
     }
     else if((lnk = oct->lnk) && (*NmbItm < MaxItm) )
     {
@@ -907,9 +914,17 @@ static void GetBox(  OtrSct *otr, OctSct *oct, itg typ, itg *NmbItm,
             if(lnk->typ != typ)
                 continue;
 
+#ifdef DEBUG
+            DEBUG("GetBox()");
+#endif
+
             if(lnk->typ == LolTypVer)
             {
                 SetItm(otr->msh, LolTypVer, lnk->idx, 0, ThrIdx);
+
+#ifdef DEBUG
+                DEBUG("GetBox()");
+#endif
 
                 if(!VerInsHex(&ThrMsh->ver[0], &ThrOct->hex))
                     continue;
@@ -918,12 +933,20 @@ static void GetBox(  OtrSct *otr, OctSct *oct, itg typ, itg *NmbItm,
             {
                 SetItm(otr->msh, LolTypEdg, lnk->idx, 0, ThrIdx);
 
+#ifdef DEBUG
+                DEBUG("GetBox()");
+#endif
+
                 if(!EdgIntHex(&ThrMsh->edg, &ThrOct->hex, otr->eps))
                     continue;
             }
             else if(lnk->typ == LolTypTri)
             {
                 SetItm(otr->msh, LolTypTri, lnk->idx, TngFlg, ThrIdx);
+
+#ifdef DEBUG
+                DEBUG("GetBox()");
+#endif
 
                 if(!TriIntHex(&ThrMsh->tri, &ThrOct->hex, otr->eps))
                     continue;
@@ -932,6 +955,10 @@ static void GetBox(  OtrSct *otr, OctSct *oct, itg typ, itg *NmbItm,
             {
                 SetItm(otr->msh, LolTypQad, lnk->idx, TngFlg, ThrIdx);
 
+#ifdef DEBUG
+                DEBUG("GetBox()");
+#endif
+
                 if(!QadIntHex(&ThrMsh->qad, &ThrOct->hex, otr->eps))
                     continue;
             }
@@ -939,14 +966,24 @@ static void GetBox(  OtrSct *otr, OctSct *oct, itg typ, itg *NmbItm,
             {
                 SetItm(otr->msh, LolTypTet, lnk->idx, TngFlg, ThrIdx);
 
+#ifdef DEBUG
+                DEBUG("GetBox()");
+#endif
+
                 if(!TetIntHex(&ThrMsh->tet, &ThrOct->hex, otr->eps))
                     continue;
             }
 
             if(!FlgTab[ lnk->idx ])
             {
+#ifdef DEBUG
+                DEBUG("GetBox()");
+#endif
                 ItmTab[ (*NmbItm)++ ] = lnk->idx;
                 FlgTab[ lnk->idx ] = 1;
+#ifdef DEBUG
+                DEBUG("GetBox()");
+#endif
             }
 
 #ifdef DEBUG
